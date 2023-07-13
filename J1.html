@@ -1,121 +1,108 @@
-<html lang="en">
- 
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
- 
-    <title>Bravo 3leek</title>
-    <meta name="description" content="Bravo 3leeeeeeeeeeeeeeeeeeek">
-    <meta name="author" content="SitePoint">
-    <style>
-        body {
-            background-color: gray;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            padding-top: 200px;
-        }
- 
-        .question {
-            color: white;
-            font-size: 180%;
-        }
- 
-        .btn {
-            background-color: #f4511e;
-            border: none;
-            color: white;
-            padding: 16px 32px;
-            text-align: center;
-            font-size: 16px;
-            margin: 4px 2px;
-            opacity: 0.6;
-            transition: 0.3s;
-        }
- 
-        .bravo {
-            position: fixed;
-            top: 0;
- 
-        }
- 
-        .image {
-            position: fixed;
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            opacity: 80%;
-            z-index: -1;
-        }
- 
-        .hide {
-            display: none !important;
-        }
- 
-        .btn:hover {
-            opacity: 1
-        }
- 
-        @media (max-width: 768px) {
-            body {
-                padding-top: 130px;
-            }
- 
-            .textfield {
-                width: 80%;
-            }
-        }
- 
-        .textfield {
-            border: none;
-            color: #f4511e;
-            width: 200px;
-            height: 100px;
-            padding: 10px;
-            font-size: 20px;
-            overflow: hidden;
-            border-radius: 10px;
-            opacity: 80%;
-        }
- 
-        .mylable {
-            font-size: 120%;
-            color: white;
-            margin-top: 10px;
-        }
-    </style>
+  <title>Restaurant Average Rate Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333333;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #333333;
+      font-weight: bold;
+    }
+    
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      border: none;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #dddddd;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+  <script>
+    function calculateAverage() {
+      var currentRate = parseFloat(document.getElementById("currentRate").value);
+      var reviewCount = parseInt(document.getElementById("reviewCount").value);
+      
+      var newRate = (currentRate * reviewCount + 50 * 5) / (reviewCount + 50);
+      var newReviewCount = 50;
+      
+      var output = "<table>";
+      output += "<tr><th>New Reviews Added</th><th>Average Rate after Adding Reviews</th></tr>";
+      output += "<tr><td>" + newReviewCount + "</td><td>" + newRate.toFixed(2) + "</td></tr>";
+      
+      while (newRate < 4.5) {
+        newReviewCount += 50;
+        reviewCount += 50;
+        newRate = (newRate * reviewCount + 50 * 5) / (reviewCount + 50);
+        
+        output += "<tr><td>" + newReviewCount + "</td><td>" + newRate.toFixed(2) + "</td></tr>";
+      }
+      
+      output += "</table>";
+      
+      document.getElementById("result").innerHTML = output;
+    }
+  </script>
 </head>
- 
 <body>
-    <div class="question">ايه الانجاز اللي عملته النهاردة ؟</div><br><br>
-    <input placeholder="....." type="text" class='textfield'></input>
-    <br>
-    <button class='btn'>Submit</button>
-    <div class="hide mylable">اكتب يسطا متخمش</div>
-    <video src="/video.mp4" controls class='hide bravo'></video>
-    <script>
-        const bravo = document.querySelector('.bravo');
-        document.querySelector('.btn').addEventListener('click', () => {
-            if (document.querySelector('input').value == '') {
-                document.querySelector('.mylable').classList.remove('hide');
-            } else {
-                document.querySelector('.mylable').classList.add('hide');
-                document.querySelector('input').value = '';
-                bravo.classList.remove('hide');
-                bravo.currentTime = 0;
-                bravo.play();
-            }
-        })
-        bravo.addEventListener('ended', () => {
-            bravo.classList.add('hide');
-        })
-        bravo.addEventListener('pause', () => {
-            bravo.classList.add('hide');
-        })
-    </script>
- 
+  <div class="container">
+    <h1>Restaurant Average Rate Calculator</h1>
+    <label for="currentRate">Current Rate (out of 5 stars):</label>
+    <input type="number" id="currentRate" min="0" max="5" step="0.1" required><br><br>
+    <label for="reviewCount">Number of Reviews:</label>
+    <input type="number" id="reviewCount" required><br><br>
+    <button onclick="calculateAverage()">Calculate</button><br><br>
+    <div id="result"></div>
+  </div>
 </body>
- 
 </html>
